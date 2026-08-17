@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Condensed:wght@700;900&display=swap" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root {
     --fw-red: #c8102e;
@@ -787,6 +788,64 @@
     .summary-grid dt { padding-top: 8px; border-top: 1px solid var(--fw-grey-300); }
     .summary-grid dt:first-child { border-top: none; padding-top: 0; }
   }
+
+  /* Mandat-Infobox */
+  .mandate-box {
+    background: #f0f7ff;
+    border: 1.5px solid #1976d2;
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin: 20px 0 0;
+  }
+  .mandate-box h4 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1976d2;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+  .mandate-row {
+    display: flex;
+    gap: 8px;
+    font-size: 13.5px;
+    padding: 4px 0;
+    border-bottom: 1px solid #d0e4f7;
+  }
+  .mandate-row:last-child { border-bottom: none; }
+  .mandate-label { color: var(--fw-grey-700); flex: 0 0 180px; }
+  .mandate-value { color: var(--fw-black); font-weight: 500; word-break: break-all; }
+
+  /* Bestätigungs-E-Mail-Box auf Erfolgsseite */
+  .email-sent-box {
+    background: #f0fff4;
+    border: 1.5px solid #2e7d32;
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    margin: 20px auto;
+    max-width: 540px;
+    text-align: center;
+  }
+  .email-sent-box .sent-icon {
+    width: 48px; height: 48px;
+    background: #2e7d32;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    color: #fff;
+  }
+  .email-sent-box p { margin: 4px 0; color: var(--fw-grey-700); font-size: 14px; }
+  .email-sent-box strong { color: var(--fw-black); }
+  .email-error-box {
+    background: #fff5f5;
+    border: 1.5px solid var(--fw-error);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin: 20px auto;
+    max-width: 540px;
+    font-size: 14px;
+    color: var(--fw-error);
+  }
 </style>
 </head>
 <body>
@@ -938,19 +997,25 @@
           </div>
         </div>
 
-        <details class="legal-collapse">
-          <summary>SEPA-Mandatstext anzeigen</summary>
-          <div class="content">
-            <p><strong>Zahlungsempfänger:</strong><br>
-            Freiwillige Feuerwehr Lorsbach e.V.<br>
-            Im Lorsbachtal 13, 65719 Hofheim am Taunus<br>
-            <strong>Gläubiger-Identifikationsnummer:</strong> DE35ZZZ00000281997<br>
-            <strong>Mandatsreferenz:</strong> wird separat mitgeteilt</p>
-            <p>Ich ermächtige die Freiwillige Feuerwehr Lorsbach e.V., Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an, die von der Freiwilligen Feuerwehr Lorsbach e.V. auf mein Konto gezogenen Lastschriften einzulösen.</p>
-            <p><strong>Hinweis:</strong> Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.</p>
-            <p><strong>Zahlungsart:</strong> Wiederkehrende Zahlung</p>
+        <div class="mandate-box">
+          <h4>SEPA-Lastschriftmandat – Mandatsdaten</h4>
+          <div class="mandate-row">
+            <span class="mandate-label">Zahlungsempfänger</span>
+            <span class="mandate-value">Freiwillige Feuerwehr Lorsbach e.V., Im Lorsbachtal 13, 65719 Hofheim am Taunus</span>
           </div>
-        </details>
+          <div class="mandate-row">
+            <span class="mandate-label">Gläubiger-ID</span>
+            <span class="mandate-value">DE35ZZZ00000281997</span>
+          </div>
+          <div class="mandate-row">
+            <span class="mandate-label">Mandatsreferenz</span>
+            <span class="mandate-value" id="mandatRefDisplay">wird generiert …</span>
+          </div>
+          <div class="mandate-row">
+            <span class="mandate-label">Zahlungsart</span>
+            <span class="mandate-value">Wiederkehrende Zahlung</span>
+          </div>
+        </div>
       </div>
       <div class="card-footer">
         <button type="button" class="btn btn-secondary" data-action="prev">← Zurück</button>
@@ -1011,7 +1076,7 @@
           </label>
           <label class="check">
             <input type="checkbox" id="confirmSepa" name="confirmSepa" required />
-            <span><span class="req">*</span> Ich erteile das <strong>SEPA-Lastschriftmandat</strong> und ermächtige die Freiwillige Feuerwehr Lorsbach e.V., den Mitgliedsbeitrag von meinem Konto einzuziehen.</span>
+            <span><span class="req">*</span> Ich erteile hiermit elektronisch das <strong>SEPA-Lastschriftmandat</strong> und ermächtige die Freiwillige Feuerwehr Lorsbach e.V. (Gläubiger-ID: DE35ZZZ00000281997), den jährlichen Mitgliedsbeitrag von meinem Konto mittels Lastschrift einzuziehen. Ich weise mein Kreditinstitut an, die entsprechenden Lastschriften einzulösen. Mir ist bekannt, dass ich innerhalb von 8 Wochen ab Belastungsdatum Erstattung verlangen kann. Eine Bestätigung mit allen Mandatsdaten erhalte ich per E-Mail.</span>
           </label>
           <label class="check">
             <input type="checkbox" id="confirmAntrag" name="confirmAntrag" required />
@@ -1028,8 +1093,8 @@
     <!-- ===================== STEP 5 ===================== -->
     <section class="step" data-step="5">
       <div class="card-header">
-        <h2>5. Zusammenfassung & Antrag drucken</h2>
-        <p>Bitte überprüfen Sie Ihre Angaben. Im nächsten Schritt erzeugen wir ein vorausgefülltes PDF zum Ausdrucken und Unterschreiben.</p>
+        <h2>5. Zusammenfassung & Antrag einreichen</h2>
+        <p>Bitte überprüfen Sie Ihre Angaben. Mit einem Klick reichen Sie den Antrag verbindlich ein – Sie erhalten sofort eine Bestätigungs-E-Mail mit allen Mandatsdaten.</p>
       </div>
       <div class="card-body">
         <dl class="summary-grid" id="summary"></dl>
@@ -1038,24 +1103,15 @@
           <strong>Rechtshinweis:</strong> Für die rechtsverbindliche Mitgliedschaft und das SEPA-Lastschriftmandat ist Ihre eigenhändige Unterschrift erforderlich. Drucken Sie das PDF aus, unterschreiben Sie es und senden Sie es per Post oder eingescannt per E-Mail an den Verein zurück.
         </div>
 
-        <label class="check email-check" for="optEmail">
-          <input type="checkbox" id="optEmail" name="optEmail" />
-          <span>
-            <span class="email-check-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-              Zusätzlich: Vorstand per E-Mail vorab benachrichtigen
-            </span>
-            <span class="email-check-desc">
-              Nach der PDF-Erstellung öffnet sich Ihr E-Mail-Programm mit einem vorbereiteten Text an <strong>verein@feuerwehr-lorsbach.de</strong>. So weiß der Vorstand, dass Ihr Antrag in Kürze per Post eintrifft. Ihre <strong>IBAN wird aus Sicherheitsgründen nicht</strong> in der E-Mail übertragen.
-            </span>
-          </span>
-        </label>
+        <div class="legal-box" style="margin-top:16px;">
+          <strong>Hinweis:</strong> Mit dem Einreichen wird automatisch eine Bestätigungs-E-Mail mit allen Mandatsdaten an Ihre E-Mail-Adresse gesendet. Diese E-Mail dient als Nachweis Ihrer elektronischen Zustimmung zum SEPA-Lastschriftmandat. Bitte bewahren Sie sie auf.
+        </div>
       </div>
       <div class="card-footer">
         <button type="button" class="btn btn-secondary" data-action="prev">← Zurück</button>
         <button type="button" id="generatePdfBtn" class="btn btn-success">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 8V3.5L18.5 9H13z"/></svg>
-          Antrag als PDF erstellen
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          Antrag verbindlich einreichen
         </button>
       </div>
     </section>
@@ -1066,76 +1122,39 @@
         <div class="success-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
-        <h2>Antrag erstellt!</h2>
-        <p class="lead" id="successLead">Ihr Mitgliedsantrag wurde als PDF generiert und der Download wurde gestartet. Vielen Dank für Ihre Unterstützung der Freiwilligen Feuerwehr Lorsbach e.V.!</p>
+        <h2>Antrag eingereicht!</h2>
+        <p class="lead">Vielen Dank für Ihre Unterstützung der Freiwilligen Feuerwehr Lorsbach e.V.!</p>
 
-        <button type="button" id="downloadAgain" class="btn btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 3v2H5v14h14V10h2v9q0 .825-.587 1.413T19 21H5q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h9Zm-4 12.6L8.6 14.2L17.8 5H14V3h7v7h-2V6.2L10 15.6Z"/></svg>
-          PDF erneut in neuem Tab öffnen
-        </button>
-
-        <div class="email-panel" id="emailPanel" style="display: none;">
-          <div class="email-panel-header">
-            <div class="icon" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            </div>
-            <div>
-              <h3>Vorankündigung an den Vorstand</h3>
-              <p>Sie haben gewählt, den Vorstand vorab zu informieren. Klicken Sie unten, um Ihr E-Mail-Programm mit dem vorbereiteten Text zu öffnen.</p>
-            </div>
+        <div class="email-sent-box" id="emailSentBox">
+          <div class="sent-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
           </div>
-          <button type="button" id="openMailBtn" class="btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            E-Mail-Programm jetzt öffnen
-          </button>
-
-          <details class="email-fallback">
-            <summary>E-Mail-Programm öffnet sich nicht? Inhalte manuell kopieren</summary>
-            <div class="fallback-content">
-              <div class="fallback-field">
-                <div class="fallback-field-head">
-                  <span class="label">Empfänger</span>
-                  <button type="button" class="copy-btn" data-copy="recipient">Kopieren</button>
-                </div>
-                <code>verein@feuerwehr-lorsbach.de</code>
-              </div>
-              <div class="fallback-field">
-                <div class="fallback-field-head">
-                  <span class="label">Betreff</span>
-                  <button type="button" class="copy-btn" data-copy="subject">Kopieren</button>
-                </div>
-                <code id="emailSubjectPreview"></code>
-              </div>
-              <div class="fallback-field">
-                <div class="fallback-field-head">
-                  <span class="label">Nachrichtentext</span>
-                  <button type="button" class="copy-btn" data-copy="body">Text kopieren</button>
-                </div>
-                <pre id="emailBodyPreview"></pre>
-              </div>
-            </div>
-          </details>
+          <p><strong>Bestätigungs-E-Mail gesendet an:</strong></p>
+          <p id="successEmail" style="font-weight:600; font-size:15px; color:var(--fw-black);">—</p>
+          <p style="margin-top:10px; font-size:13px;">Die E-Mail enthält alle Mandatsdaten als Nachweis Ihrer elektronischen Zustimmung. Bitte bewahren Sie sie auf.</p>
         </div>
 
-        <div class="next-steps">
+        <div class="email-error-box" id="emailErrorBox" style="display:none;">
+          <strong>Bestätigungs-E-Mail konnte nicht automatisch gesendet werden.</strong><br>
+          Ihr Antrag wurde dennoch übermittelt. Bitte wenden Sie sich bei Fragen an <a href="mailto:verein@feuerwehr-lorsbach.de">verein@feuerwehr-lorsbach.de</a>.
+        </div>
+
+        <button type="button" id="downloadAgain" class="btn btn-secondary" style="margin-top:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 8V3.5L18.5 9H13z"/></svg>
+          PDF als persönliche Kopie herunterladen
+        </button>
+
+        <div class="next-steps" style="margin-top:24px;">
           <h3>So geht es weiter:</h3>
           <ol>
-            <li><strong>PDF ausdrucken</strong> – das Dokument enthält bereits alle Ihre Angaben.</li>
-            <li><strong>Antrag und SEPA-Mandat unterschreiben</strong> – beide Unterschriftenfelder.</li>
-            <li><strong>Zurücksenden</strong> – per Post oder eingescannt per E-Mail an den Verein.</li>
+            <li>Der Vorstand beschließt über Ihre Aufnahme.</li>
+            <li>Der erste Beitragseinzug erfolgt frühestens 5 Werktage nach Aufnahme.</li>
+            <li>Bei Fragen: <a href="mailto:verein@feuerwehr-lorsbach.de">verein@feuerwehr-lorsbach.de</a></li>
           </ol>
         </div>
 
-        <div class="contact-block">
-          <strong>Freiwillige Feuerwehr Lorsbach e.V.</strong><br>
-          Im Lorsbachtal 13<br>
-          65719 Hofheim am Taunus<br>
-          E-Mail: <a href="mailto:verein@feuerwehr-lorsbach.de">verein@feuerwehr-lorsbach.de</a><br>
-          Telefon: 06192 / 9869957
-        </div>
-
-        <p style="margin-top: 24px; font-size: 13px; color: var(--fw-grey-500);">
-          Sobald der Antrag bei uns eingegangen ist, wird der Vorstand über die Aufnahme entscheiden. Sie erhalten anschließend eine Bestätigung mit Ihrer Mitgliedsnummer.
+        <p style="margin-top: 16px; font-size: 13px; color: var(--fw-grey-500);">
+          Mandatsreferenz: <strong id="successMandatRef">—</strong>
         </p>
       </div>
     </section>
@@ -1155,6 +1174,21 @@
 <script>
 (function () {
   'use strict';
+
+  // ---------- EMAILJS ----------
+  emailjs.init('nwmLAk7lrt63T89sg');
+
+  // ---------- MANDAT-REFERENZ ----------
+  const mandatRef = (function () {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const d = String(now.getDate()).padStart(2, '0');
+    const rand = String(Math.floor(1000 + Math.random() * 9000));
+    return `FF-LB-${y}${m}${d}-${rand}`;
+  })();
+
+  document.querySelectorAll('#mandatRefDisplay').forEach(el => { el.textContent = mandatRef; });
 
   // ---------- STATE ----------
   let currentStep = 1;
@@ -1627,7 +1661,10 @@
       ['E-Mail', d.email || '— (nicht angegeben)'],
       ['Jährlicher Beitrag', `${d.beitrag.toFixed(2).replace('.', ',')} €`],
       ['Kontoinhaber', d.kontoinhaber],
-      ['IBAN', d.iban]
+      ['IBAN', d.iban],
+      ['Gläubiger-ID', 'DE35ZZZ00000281997'],
+      ['Mandatsreferenz', mandatRef],
+      ['Zahlungsart', 'Wiederkehrende Zahlung']
     ];
     summary.innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${escapeHtml(v)}</dd>`).join('');
   }
@@ -1919,10 +1956,9 @@
     return { method: 'tab', filename };
   }
 
-  // ---------- GENERATE BUTTON ----------
+  // ---------- SUBMIT BUTTON ----------
   const generateBtn = document.getElementById('generatePdfBtn');
   generateBtn.addEventListener('click', async () => {
-    // Re-validate everything
     let allOk = true;
     for (let s = 1; s <= 4; s++) {
       if (!originalValidateStep(s)) { allOk = false; break; }
@@ -1931,46 +1967,57 @@
       alert('Bitte überprüfen Sie Ihre Angaben – einige Felder sind unvollständig.');
       return;
     }
+
     const originalLabel = generateBtn.innerHTML;
-    const optEmailEl = document.getElementById('optEmail');
-    const wantsEmail = !!(optEmailEl && optEmailEl.checked);
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = 'Wird eingereicht …';
+
+    const d = gatherData();
+    const now = new Date();
+    const zeitstempel = now.toLocaleDateString('de-DE') + ', ' + now.toLocaleTimeString('de-DE') + ' Uhr';
+    const adresse = `${d.strasse}, ${d.plz} ${d.ort}`;
+
+    // Update success page email display
+    const successEmailEl = document.getElementById('successEmail');
+    if (successEmailEl) successEmailEl.textContent = d.email;
+    const successMandatRefEl = document.getElementById('successMandatRef');
+    if (successMandatRefEl) successMandatRefEl.textContent = mandatRef;
+
+    // Send confirmation email via EmailJS
     try {
-      generateBtn.disabled = true;
-      generateBtn.innerHTML = 'PDF wird erstellt …';
-      await briefkopfPromise;
-      const pdfResult = generatePdf();
-
-      // Update success-page lead text depending on output method and email opt-in
-      const successLead = document.getElementById('successLead');
-      if (successLead) {
-        const pdfPhrase = pdfResult && pdfResult.method === 'download'
-          ? 'als Download gestartet (Popup wurde blockiert – bitte erlauben Sie Popups, um das PDF im Browser anzuzeigen)'
-          : 'in einem neuen Tab geöffnet';
-        successLead.textContent = wantsEmail
-          ? `Ihr Mitgliedsantrag wurde als PDF erstellt und ${pdfPhrase}. Unten finden Sie die vorbereitete E-Mail-Ankündigung an den Vorstand – ein Klick öffnet Ihr E-Mail-Programm.`
-          : `Ihr Mitgliedsantrag wurde als PDF erstellt und ${pdfPhrase}. Vielen Dank für Ihre Unterstützung der Freiwilligen Feuerwehr Lorsbach e.V.!`;
-      }
-
-      // Show the email panel (if opted in) BEFORE showing step 6
-      const emailPanel = document.getElementById('emailPanel');
-      if (emailPanel) {
-        emailPanel.style.display = wantsEmail ? 'block' : 'none';
-        if (wantsEmail) populateEmailPreview();
-      }
-
-      showStep(6);
-    } catch (err) {
-      console.error(err);
-      alert('Beim Erstellen des PDF ist ein Fehler aufgetreten. Bitte laden Sie die Seite neu und versuchen Sie es erneut.');
-    } finally {
-      generateBtn.disabled = false;
-      generateBtn.innerHTML = originalLabel;
+      await emailjs.send('service_96cz1a2', 'template_xutzs9l', {
+        to_name:        `${d.vorname} ${d.nachname}`,
+        to_email:       d.email,
+        vorname:        d.vorname,
+        nachname:       d.nachname,
+        adresse:        adresse,
+        iban:           d.iban,
+        beitrag:        `${d.beitrag.toFixed(2).replace('.', ',')} € jährlich`,
+        mandat_referenz: mandatRef,
+        glaeubiger_id:  'DE35ZZZ00000281997',
+        zahlungsart:    'Wiederkehrende Zahlung',
+        zeitstempel:    zeitstempel
+      });
+      const sentBox = document.getElementById('emailSentBox');
+      if (sentBox) sentBox.style.display = '';
+      const errBox = document.getElementById('emailErrorBox');
+      if (errBox) errBox.style.display = 'none';
+    } catch (emailErr) {
+      console.error('EmailJS error:', emailErr);
+      const sentBox = document.getElementById('emailSentBox');
+      if (sentBox) sentBox.style.display = 'none';
+      const errBox = document.getElementById('emailErrorBox');
+      if (errBox) errBox.style.display = '';
     }
+
+    showStep(6);
+    generateBtn.disabled = false;
+    generateBtn.innerHTML = originalLabel;
   });
 
   document.getElementById('downloadAgain').addEventListener('click', async () => {
     try {
-      await briefkopfPromise;
+      await wappenPromise;
       generatePdf();
     } catch (e) { console.error(e); }
   });
