@@ -280,29 +280,25 @@
 
   /* Amount input */
   .amount-wrap {
-    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
   .amount-wrap input {
-    padding-right: 28px;
+    width: 120px;
     font-weight: 700;
     font-size: 18px;
     text-align: right;
   }
-  .amount-wrap::after {
-    content: '€';
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+  .amount-wrap .currency {
     font-weight: 700;
-    color: var(--fw-grey-700);
     font-size: 18px;
-    pointer-events: none;
+    color: var(--fw-grey-700);
   }
   .amount-quick {
     display: flex;
     gap: 8px;
-    margin-top: 8px;
+    margin-top: 10px;
     flex-wrap: wrap;
   }
   .amount-quick button {
@@ -586,173 +582,6 @@
   }
   .contact-block strong { color: var(--fw-red); }
 
-  /* Email-Panel (Step 6 — explicit action) */
-  .email-panel {
-    background: #eef5ff;
-    border: 2px solid #1976d2;
-    border-radius: var(--radius-md);
-    padding: 22px 24px;
-    margin: 24px auto;
-    max-width: 600px;
-    text-align: left;
-    box-shadow: 0 4px 14px rgba(25, 118, 210, 0.18);
-  }
-  .email-panel-header {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    margin-bottom: 16px;
-  }
-  .email-panel-header .icon {
-    color: #1976d2;
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    background: #d9ecff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .email-panel-header h3 {
-    margin: 0 0 6px;
-    font-size: 16px;
-    color: var(--fw-black);
-    font-family: 'Roboto Condensed', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .email-panel-header p {
-    margin: 0;
-    font-size: 13.5px;
-    color: var(--fw-grey-700);
-    line-height: 1.5;
-  }
-  #openMailBtn {
-    background: #1976d2;
-    color: var(--fw-white);
-    width: 100%;
-    justify-content: center;
-    font-size: 15px;
-    padding: 14px 24px;
-    border: none;
-  }
-  #openMailBtn:hover { background: #115293; }
-  #openMailBtn.sent {
-    background: var(--fw-success);
-  }
-  .email-fallback {
-    margin-top: 14px;
-    font-size: 13px;
-  }
-  .email-fallback > summary {
-    cursor: pointer;
-    color: var(--fw-grey-700);
-    padding: 6px 0;
-    font-weight: 500;
-    list-style: none;
-    user-select: none;
-  }
-  .email-fallback > summary::before {
-    content: '▸ ';
-    transition: transform 0.15s;
-    display: inline-block;
-  }
-  .email-fallback[open] > summary::before {
-    content: '▾ ';
-  }
-  .email-fallback > summary:hover { color: var(--fw-black); }
-  .fallback-content {
-    background: var(--fw-white);
-    border: 1px solid #cce4f5;
-    border-radius: var(--radius-sm);
-    padding: 14px;
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-  .fallback-field { display: flex; flex-direction: column; gap: 6px; }
-  .fallback-field-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-  }
-  .fallback-field-head .label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--fw-grey-700);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-  }
-  .fallback-field code,
-  .fallback-field pre {
-    background: var(--fw-grey-50);
-    padding: 8px 10px;
-    border-radius: 3px;
-    font-size: 12.5px;
-    font-family: 'Roboto Mono', 'Consolas', monospace;
-    word-break: break-word;
-    white-space: pre-wrap;
-    margin: 0;
-    max-height: 240px;
-    overflow-y: auto;
-    color: var(--fw-grey-900);
-  }
-  .copy-btn {
-    font-size: 12px;
-    padding: 5px 12px;
-    background: var(--fw-grey-100);
-    border: 1px solid var(--fw-grey-300);
-    border-radius: 3px;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--fw-grey-900);
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  .copy-btn:hover { background: #1976d2; color: var(--fw-white); border-color: #1976d2; }
-  .copy-btn.copied { background: var(--fw-success) !important; color: var(--fw-white) !important; border-color: var(--fw-success) !important; }
-  @media (max-width: 480px) {
-    .email-panel { padding: 18px 16px; }
-    .email-panel-header { flex-direction: column; gap: 8px; }
-  }
-
-  /* Email-announcement checkbox (Step 5) */
-  .check.email-check {
-    border-left: 4px solid #1976d2;
-    margin-top: 18px;
-    background: #f5f9ff;
-  }
-  .check.email-check:hover { border-color: #1976d2; }
-  .check.email-check input { accent-color: #1976d2; }
-  .check.email-check.checked {
-    border-color: #1976d2;
-    background: #eef5ff;
-  }
-  .check.email-check .email-check-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    color: var(--fw-black);
-    font-size: 14.5px;
-  }
-  .check.email-check .email-check-title svg {
-    color: #1976d2;
-    flex-shrink: 0;
-  }
-  .check.email-check .email-check-desc {
-    display: block;
-    font-size: 13px;
-    color: var(--fw-grey-700);
-    margin-top: 6px;
-    line-height: 1.55;
-    font-weight: 400;
-  }
-  .check.email-check .email-check-desc strong { color: var(--fw-grey-900); }
-
   /* ---------- FOOTER ---------- */
   footer {
     background: var(--fw-black);
@@ -945,10 +774,11 @@
       </div>
       <div class="card-body">
         <p style="margin:0 0 16px 0; color: var(--fw-grey-700);">Wählen Sie einen voreingestellten Beitrag aus oder geben Sie einen individuellen Betrag direkt in das Eingabefeld ein.</p>
-        <div class="field full" style="max-width: 420px;">
+        <div class="field full">
           <label for="beitrag">Jährlicher Mitgliedsbeitrag <span class="req">*</span></label>
           <div class="amount-wrap">
             <input type="number" id="beitrag" name="beitrag" required min="10" step="1" value="10" inputmode="numeric" />
+            <span class="currency">€</span>
           </div>
           <div class="amount-quick" role="group" aria-label="Beitrag schnell auswählen">
             <button type="button" data-amount="10" class="active">10 €</button>
@@ -1184,7 +1014,13 @@
   'use strict';
 
   // ---------- EMAILJS ----------
-  emailjs.init('nwmLAk7lrt63T89sg');
+  let emailjsReady = false;
+  try {
+    emailjs.init('nwmLAk7lrt63T89sg');
+    emailjsReady = true;
+  } catch (e) {
+    console.warn('EmailJS konnte nicht initialisiert werden:', e);
+  }
 
   // ---------- MANDAT-REFERENZ ----------
   const mandatRef = (function () {
@@ -1381,8 +1217,6 @@
     }
   });
 
-  // E-Mail-Adresse ist Pflichtfeld – wird durch die generelle Validierung abgedeckt
-  const originalValidateStep = validateStep;
 
   // ---------- BIRTHDAY AUTO-FORMAT ----------
   const geburtsdatumInput = document.getElementById('geburtsdatum');
@@ -1635,12 +1469,6 @@
   // ---------- SUMMARY ----------
   function formatDateDe(d) {
     if (!d) return '';
-    // ISO format YYYY-MM-DD → DD.MM.YYYY (kept for backward compatibility)
-    if (/^\d{4}-\d{2}-\d{2}/.test(d)) {
-      const [y, m, day] = d.split('-');
-      return `${day}.${m}.${y.slice(0, 4)}`;
-    }
-    // Already in German DD.MM.YYYY format
     return d;
   }
 
@@ -1799,18 +1627,11 @@
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
-    doc.text('Ich habe die rückseitige Datenschutzerklärung gelesen und stimme ihr zu.', margin, y);
-    y += 12;
-
-    // Signature line
-    doc.setLineWidth(0.3);
-    doc.line(margin, y, margin + 90, y);
-    y += 4;
+    doc.text('Die Datenschutzerklärung wurde gelesen und die Zustimmung wurde elektronisch erteilt.', margin, y);
+    y += 6;
     doc.setFontSize(9);
     doc.setTextColor(80, 80, 80);
-    doc.text(`${ort}, ${todayDe} – Unterschrift`, margin, y);
-    y += 4;
-    doc.text('(ggf. Unterschrift des gesetzlichen Vertreters)', margin, y);
+    doc.text(`Elektronische Zustimmung erteilt am: ${todayDe} (${ort})`, margin, y);
 
     y += 10;
     // ---- SEPA SECTION ----
@@ -1831,7 +1652,7 @@
     doc.setFontSize(9);
     doc.text('Gläubiger-Identifikationsnummer: DE35ZZZ00000281997', margin, y);
     y += 4;
-    doc.text('Mandatsreferenz: wird separat mitgeteilt', margin, y);
+    doc.text(`Mandatsreferenz: ${mandatRef}`, margin, y);
     y += 5;
 
     const sepaText = 'Ich ermächtige die Freiwillige Feuerwehr Lorsbach e.V., Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an, die von der Freiwilligen Feuerwehr Lorsbach e.V. auf mein Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.';
@@ -1864,15 +1685,13 @@
     doc.text(d.iban, margin + 22, y);
     y += 10;
 
-    // Signature line for SEPA
-    doc.setDrawColor(0, 0, 0);
-    doc.setLineWidth(0.3);
-    doc.line(margin, y, margin + 90, y);
-    y += 4;
+    // Electronic consent note for SEPA
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor(80, 80, 80);
-    doc.text(`${ort}, ${todayDe} – Unterschrift des Kontoinhabers`, margin, y);
+    doc.text(`Elektronisches SEPA-Mandat erteilt am: ${todayDe} (${ort})`, margin, y);
+    y += 4;
+    doc.text('Das Mandat wurde online ohne eigenhändige Unterschrift rechtsgültig erteilt.', margin, y);
 
     y += 12;
     // Vorstandsfeld
@@ -1967,12 +1786,12 @@
   // ---------- SUBMIT BUTTON ----------
   const generateBtn = document.getElementById('generatePdfBtn');
   generateBtn.addEventListener('click', async () => {
-    let allOk = true;
+    let failStep = 0;
     for (let s = 1; s <= 4; s++) {
-      if (!originalValidateStep(s)) { allOk = false; break; }
+      if (!validateStep(s)) { failStep = s; break; }
     }
-    if (!allOk) {
-      alert('Bitte überprüfen Sie Ihre Angaben – einige Felder sind unvollständig.');
+    if (failStep > 0) {
+      showStep(failStep);
       return;
     }
 
@@ -1993,19 +1812,28 @@
 
     // Send confirmation email via EmailJS
     try {
-      await emailjs.send('service_96cz1a2', 'template_xutzs9l', {
-        to_name:        `${d.vorname} ${d.nachname}`,
-        to_email:       d.email,
-        vorname:        d.vorname,
-        nachname:       d.nachname,
-        adresse:        adresse,
-        iban:           d.iban,
-        beitrag:        `${d.beitrag.toFixed(2).replace('.', ',')} € jährlich`,
-        mandat_referenz: mandatRef,
-        glaeubiger_id:  'DE35ZZZ00000281997',
-        zahlungsart:    'Wiederkehrende Zahlung',
-        zeitstempel:    zeitstempel
-      });
+      if (!emailjsReady) throw new Error('EmailJS nicht initialisiert');
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout')), 15000)
+      );
+      await Promise.race([
+        emailjs.send('service_96cz1a2', 'template_xutzs9l', {
+          to_name:        `${d.vorname} ${d.nachname}`,
+          to_email:       d.email,
+          vorname:        d.vorname,
+          nachname:       d.nachname,
+          geburtsdatum:   d.geburtsdatum,
+          adresse:        adresse,
+          kontoinhaber:   d.kontoinhaber,
+          iban:           d.iban,
+          beitrag:        `${d.beitrag.toFixed(2).replace('.', ',')} € jährlich`,
+          mandat_referenz: mandatRef,
+          glaeubiger_id:  'DE35ZZZ00000281997',
+          zahlungsart:    'Wiederkehrende Zahlung',
+          zeitstempel:    zeitstempel
+        }),
+        timeout
+      ]);
       const sentBox = document.getElementById('emailSentBox');
       if (sentBox) sentBox.style.display = '';
       const errBox = document.getElementById('emailErrorBox');
@@ -2024,131 +1852,17 @@
   });
 
   document.getElementById('downloadAgain').addEventListener('click', async () => {
+    const btn = document.getElementById('downloadAgain');
     try {
       await briefkopfPromise;
       generatePdf();
-    } catch (e) { console.error(e); }
-  });
-
-  // ---------- EMAIL ANNOUNCEMENT ----------
-  const EMAIL_RECIPIENT = 'verein@feuerwehr-lorsbach.de';
-
-  function buildEmailSubject() {
-    const d = gatherData();
-    return `Ankündigung: Antrag auf fördernde Mitgliedschaft – ${d.vorname} ${d.nachname}`.trim();
-  }
-
-  function buildEmailBody() {
-    const d = gatherData();
-    const fullName = `${d.vorname} ${d.nachname}`.trim();
-    const lines = [
-      'Sehr geehrter Vorstand der Freiwilligen Feuerwehr Lorsbach e.V.,',
-      '',
-      'hiermit möchte ich Ihnen ankündigen, dass ich einen Antrag auf eine fördernde Mitgliedschaft ausgefüllt habe. Den unterschriebenen Antrag werde ich Ihnen in den kommenden Tagen per Post zukommen lassen.',
-      '',
-      'Meine Antragsdaten:',
-      `• Name: ${fullName}`,
-      `• Geburtsdatum: ${formatDateDe(d.geburtsdatum)}`,
-      `• Anschrift: ${d.strasse}, ${d.plz} ${d.ort}`
-    ];
-    if (d.email) lines.push(`• E-Mail: ${d.email}`);
-    lines.push(`• Jährlicher Mitgliedsbeitrag: ${d.beitrag.toFixed(2).replace('.', ',')} €`);
-    lines.push('');
-    lines.push('Die Bankverbindung für das SEPA-Lastschriftmandat befindet sich aus Sicherheitsgründen ausschließlich auf dem unterschriebenen Antrag.');
-    lines.push('');
-    lines.push('Mit freundlichen Grüßen');
-    lines.push(fullName);
-    lines.push('');
-    lines.push('---');
-    lines.push('Diese Ankündigung wurde über das Online-Formular erstellt:');
-    lines.push('https://alllexxx999.github.io/feuerwehr-lorsbach-mitgliedsantrag/');
-    return lines.join('\n');
-  }
-
-  function buildAnnouncementMailto() {
-    const subject = buildEmailSubject();
-    const body = buildEmailBody().replace(/\n/g, '\r\n');
-    return 'mailto:' + EMAIL_RECIPIENT
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body=' + encodeURIComponent(body);
-  }
-
-  function populateEmailPreview() {
-    const s = document.getElementById('emailSubjectPreview');
-    const b = document.getElementById('emailBodyPreview');
-    if (s) s.textContent = buildEmailSubject();
-    if (b) b.textContent = buildEmailBody();
-  }
-
-  // Explicit "open mail" button on success page
-  const openMailBtn = document.getElementById('openMailBtn');
-  if (openMailBtn) {
-    const originalBtnHTML = openMailBtn.innerHTML;
-    openMailBtn.addEventListener('click', () => {
-      const url = buildAnnouncementMailto();
-      // Use a real anchor element with target=_self for maximum mailto-handler compatibility
-      const a = document.createElement('a');
-      a.href = url;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      // Strong visual feedback so user notices something happened
-      openMailBtn.classList.add('sent');
-      openMailBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> E-Mail-Programm geöffnet – bitte prüfen';
-      setTimeout(() => {
-        openMailBtn.classList.remove('sent');
-        openMailBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg> Erneut öffnen';
-      }, 4000);
-    });
-  }
-
-  // Copy-to-clipboard for fallback fields
-  async function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      try { await navigator.clipboard.writeText(text); return true; } catch (_) {}
+    } catch (e) {
+      console.error(e);
+      const orig = btn.innerHTML;
+      btn.textContent = 'PDF konnte nicht erstellt werden – bitte Seite neu laden.';
+      setTimeout(() => { btn.innerHTML = orig; }, 5000);
     }
-    // Fallback for older browsers / insecure contexts
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.top = '0';
-    ta.style.left = '0';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    let ok = false;
-    try { ok = document.execCommand('copy'); } catch (_) {}
-    document.body.removeChild(ta);
-    return ok;
-  }
-
-  document.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const what = btn.dataset.copy;
-      let text = '';
-      if (what === 'recipient') text = EMAIL_RECIPIENT;
-      else if (what === 'subject') text = buildEmailSubject();
-      else if (what === 'body') text = buildEmailBody();
-      if (!text) return;
-
-      const ok = await copyText(text);
-      const original = btn.textContent;
-      if (ok) {
-        btn.classList.add('copied');
-        btn.textContent = '✓ Kopiert';
-      } else {
-        btn.textContent = '✗ Fehler';
-      }
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        btn.textContent = original;
-      }, 2000);
-    });
   });
-
 
   // ---------- PREVENT FORM SUBMIT ----------
   form.addEventListener('submit', e => e.preventDefault());
