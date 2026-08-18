@@ -944,7 +944,8 @@
         <p>Sie unterstützen die Feuerwehr Lorsbach mit einem jährlichen Mitgliedsbeitrag. Der Mindestbeitrag beträgt <strong>10 € pro Jahr</strong>.</p>
       </div>
       <div class="card-body">
-        <div class="field full" style="max-width: 320px;">
+        <p style="margin:0 0 16px 0; color: var(--fw-grey-700);">Wählen Sie einen voreingestellten Beitrag aus oder geben Sie einen individuellen Betrag direkt in das Eingabefeld ein.</p>
+        <div class="field full" style="max-width: 420px;">
           <label for="beitrag">Jährlicher Mitgliedsbeitrag <span class="req">*</span></label>
           <div class="amount-wrap">
             <input type="number" id="beitrag" name="beitrag" required min="10" step="1" value="10" inputmode="numeric" />
@@ -955,6 +956,9 @@
             <button type="button" data-amount="30">30 €</button>
             <button type="button" data-amount="50">50 €</button>
             <button type="button" data-amount="100">100 €</button>
+            <button type="button" data-amount="200">200 €</button>
+            <button type="button" data-amount="300">300 €</button>
+            <button type="button" data-amount="500">500 €</button>
           </div>
           <span class="error-msg" id="beitragError">Der Mindestbeitrag beträgt 10 € pro Jahr.</span>
         </div>
@@ -1100,7 +1104,7 @@
         <dl class="summary-grid" id="summary"></dl>
 
         <div class="legal-box">
-          <strong>Rechtshinweis:</strong> Für die rechtsverbindliche Mitgliedschaft und das SEPA-Lastschriftmandat ist Ihre eigenhändige Unterschrift erforderlich. Drucken Sie das PDF aus, unterschreiben Sie es und senden Sie es per Post oder eingescannt per E-Mail an den Verein zurück.
+          <strong>Rechtshinweis:</strong> Durch das Absenden dieses Antrags erteilen Sie dem Verein ein elektronisches SEPA-Lastschriftmandat gemäß Ihrer Zustimmung in Schritt 4. Das Mandat ist ohne eigenhändige Unterschrift rechtsgültig. Sie erhalten eine Bestätigungs-E-Mail als Nachweis.
         </div>
 
         <div class="legal-box" style="margin-top:16px;">
@@ -1143,6 +1147,10 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 8V3.5L18.5 9H13z"/></svg>
           PDF als persönliche Kopie herunterladen
         </button>
+
+        <div class="legal-box" style="margin-top:16px; text-align:left;">
+          Ihr Antrag wurde an <strong>verein@feuerwehr-lorsbach.de</strong> übermittelt.
+        </div>
 
         <div class="next-steps" style="margin-top:24px;">
           <h3>So geht es weiter:</h3>
@@ -2017,7 +2025,7 @@
 
   document.getElementById('downloadAgain').addEventListener('click', async () => {
     try {
-      await wappenPromise;
+      await briefkopfPromise;
       generatePdf();
     } catch (e) { console.error(e); }
   });
